@@ -1,10 +1,10 @@
 #include ./.env
-image_name = traveling
+image_name = real-functions-heuristic
 
 #Deve ser executado na primeira interação com o projeto
 run: ;
-	@echo -e "\nBuild traveling image\n"; \
+	@echo -e "\nBuild $(image_name) image\n"; \
 	docker build -t $(image_name) .; \
-	echo -e "\nRunning traveling container\n"; \
-	docker run -it --rm --name traveling-container traveling; \
+	echo -e "\nRunning $(image_name) container\n"; \
+	docker run -it --rm --name $(image_name)-container $(image_name); \
 

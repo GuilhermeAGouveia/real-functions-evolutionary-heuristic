@@ -1,0 +1,2 @@
+O percurso ótimo entre os pontos pode ser encontrado no site onde foram retiradas as instacias:
+https://www.math.uwaterloo.ca/tsp/vlsi/index.html#XQF131

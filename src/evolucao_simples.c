@@ -128,9 +128,97 @@ void select_parents(individue *populacao, int n_populacoes, int *parents)
     //exit(0);
 }
 
-individue cruzamento(individue parent1, individue parent2, int n_itens)
-{
-    DEBUG(printf("\ncruzamento\n"););
+typedef enum {
+    MEDIA,
+    MEDIA_GEOMETRICA,
+    METADE,
+    PONTO,
+    FLAT,
+    BLEND,
+} crossover_type;
+
+
+
+individue cruzamento_media(individue parent1, individue parent2, int n_itens) {
+    DEBUG(printf("\ncruzamento_media\n"););
+
+    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    individue child = {child_chromosome, INFINITY};
+
+    for (int i = 0; i < n_itens; i++)
+    {
+        child.chromosome[i] = (parent1.chromosome[i] + parent2.chromosome[i]) / 2;
+    }
+    fitness(&child, n_itens);
+    return child;
+}
+
+individue cruzamento_media_g(individue parent1, individue parent2, int n_itens) {
+    DEBUG(printf("\ncruzamento_media\n"););
+
+    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    individue child = {child_chromosome, INFINITY};
+
+    for (int i = 0; i < n_itens; i++)
+    {
+        child.chromosome[i] = sqrt(parent1.chromosome[i] * parent2.chromosome[i]);
+    }
+    fitness(&child, n_itens);
+    return child;
+}
+
+individue cruzamento_flat(individue parent1, individue parent2, int n_itens) {
+    DEBUG(printf("\ncruzamento_flat\n"););
+
+    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    individue child = {child_chromosome, INFINITY};
+
+    for (int i = 0; i < n_itens; i++)
+    {
+        individue pais[2] = {parent1, parent2};
+        int menor = parent1.chromosome[i] < parent2.chromosome[i] ? 0 : 1;
+        child.chromosome[i] = random_double(pais[menor].chromosome[i], pais[!menor].chromosome[i]);
+    }
+    fitness(&child, n_itens);
+    return child;
+}
+
+individue cruzamento_blend(individue parent1, individue parent2, int n_itens) {
+    DEBUG(printf("\ncruzamento_blend\n"););
+
+    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    individue child = {child_chromosome, INFINITY};
+
+    for (int i = 0; i < n_itens; i++)
+    {
+        double alpha = random_double(0.0, 1.0);
+        child.chromosome[i] = alpha * parent1.chromosome[i] + (1 - alpha) * parent2.chromosome[i];
+    }
+    fitness(&child, n_itens);
+    return child;
+}
+
+individue cruzamento_metade(individue parent1, individue parent2, int n_itens) {
+    DEBUG(printf("\ncruzamento_metade\n"););
+
+    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    individue child = {child_chromosome, INFINITY};
+
+    int crossover_point = n_itens / 2;
+    for (int i = 0; i < crossover_point; i++)
+    {
+        child.chromosome[i] = parent1.chromosome[i];
+    }
+    for (int i = crossover_point; i < n_itens; i++)
+    {
+        child.chromosome[i] = parent2.chromosome[i];
+    }
+    fitness(&child, n_itens);
+    return child;
+}
+
+individue cruzamento_ponto(individue parent1, individue parent2, int n_itens) {
+    DEBUG(printf("\ncruzamento_metade\n"););
 
     double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
     individue child = {child_chromosome, INFINITY};
@@ -146,6 +234,52 @@ individue cruzamento(individue parent1, individue parent2, int n_itens)
     }
     fitness(&child, n_itens);
     return child;
+}
+
+individue cruzamento(individue parent1, individue parent2, int n_itens)
+{
+    DEBUG(printf("\ncruzamento\n"););
+
+    crossover_type crossover = PONTO;
+    switch (crossover)
+    {
+    case MEDIA:
+        return cruzamento_media(parent1, parent2, n_itens);
+    case METADE:
+        return cruzamento_metade(parent1, parent2, n_itens);
+    case PONTO:
+        return cruzamento_ponto(parent1, parent2, n_itens);
+    case MEDIA_GEOMETRICA:
+        return cruzamento_media_g(parent1, parent2, n_itens);
+    case FLAT:
+        return cruzamento_flat(parent1, parent2, n_itens);
+    case BLEND:
+        return cruzamento_blend(parent1, parent2, n_itens);
+    default:
+        return cruzamento_media(parent1, parent2, n_itens);
+    }
+}
+
+int in_fitness_population(individue *populacao, int n_populacoes, individue individuo)
+{
+    DEBUG(printf("\nin_fitness_population\n"););
+    for (int i = 0; i < n_populacoes; i++)
+    {
+        if (populacao[i].fitness == individuo.fitness)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void variation_populations(individue *populacao, int n_populacoes, int dimension, domain domain_function)
+{
+    DEBUG(printf("\nvariation_populations\n"););
+    for (int i = 0; i < n_populacoes; i++)
+    {
+        
+    }
 }
 
 individue *generate_population(int n_populacoes, int dimension, domain domain_function)
@@ -165,6 +299,8 @@ individue *generate_population(int n_populacoes, int dimension, domain domain_fu
     //DEBUG(print_population(population, n_populacoes, dimension););
     return population;
 }
+
+
 
 individue mutation(individue individuo, int dimension, domain domain_function)
 {
@@ -237,7 +373,11 @@ individue *evolution(int population_size, int dimension, domain domain_function,
 
             select_parents(population, population_size, parents);
             individue child = cruzamento(population[parents[0]], population[parents[1]], dimension);
-
+            if (in_fitness_population(population, population_size, child))
+            {
+                child = mutation(child, dimension, domain_function);
+                fitness(&child, dimension);
+            }
             DEBUG(printf("Custo do filho: %lf\n", child.fitness););
             // free(&population[i]);
             if (child.fitness < population[i].fitness)
@@ -264,8 +404,8 @@ int main(int argc, char *argv[])
 {
 
     individue *result = NULL;
-    result = evolution(100, 30, (domain){-100, 100}, 10);
+    result = evolution(100, 10, (domain){-100, 100}, 10);
 
-    print_individue(*result, 30);
+    print_individue(*result, 10);
     return 0;
 }

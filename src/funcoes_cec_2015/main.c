@@ -46,20 +46,6 @@ void test_stdin_stdout(int n)
 
 }
 
-int main(int argc, char* argv[])
-{
-	int dim;
-
-	if (argc<=1)
-		dim = 10;
-	else
-		dim = atoi(argv[1]);
-
-	if (dim!=10)
-		dim = 30;
-	test_stdin_stdout(dim);
-	return 0;
-}
 
 void test_randomsample()
 {
@@ -92,4 +78,20 @@ void test_randomsample()
 
 	write_result_statistics_to_file("result/randomsampling", "result");
 
+}
+
+int main(int argc, char* argv[])
+{
+	int dim;
+
+	if (argc<=1)
+		dim = 10;
+	else
+		dim = atoi(argv[1]);
+
+	if (dim!=10)
+		dim = 30;
+	test_stdin_stdout(dim);
+	//test_randomsample();
+	return 0;
 }

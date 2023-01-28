@@ -1,67 +1,33 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define DEBUG(x) x
-
-typedef struct city
+int roleta_pais(individue *populacao, int nPopulacoes)
 {
-    int id;
-    float x;
-    float y;
-} type_city;
+    int roleta[100000];
+    double beneficioTodosIndividuos = 0;
+    for (int i = 0; i < nPopulacoes; i++)
+    {
+        beneficioTodosIndividuos += populacao[i].fitness;
+    }
 
-void print_cidades(type_city *cidades, int n_cidades)
-{
-    for (int i = 0; i < n_cidades; i++)
-        printf("%d %f %f", cidades[i].id, cidades[i].x, cidades[i].y);
+    int base = 0;
+    for (int i = 0; i < nPopulacoes; i++)
+    {
+        int beneficioIndividuo = populacao[i].fitness;
+        int limit = ceil((double)(beneficioTodosIndividuos - beneficioIndividuo) / (double)beneficioTodosIndividuos * 100.00);
+        for (int j = base; (j < base + limit); j++)
+        {
+            roleta[j] = i;
+        }
+        base += limit;
+    }
+    return roleta[rand() % 100];
 }
 
-type_city *read_cidades(char *filename, int *n_cidades, int *capacidad)
+
+void select_parents(individue *populacao, int n_populacoes, int *parents)
 {
-    void *tmp;
-    FILE *fp = fopen(filename, "r");
-    if (fp == NULL)
-    {
-        puts("Couldn't open file");
-        exit(0);
-    }
-
-    for (int i = 0; i < 3; i++)
-        fgets(tmp, 100, fp);
- 
-    DEBUG(puts("aqui1"));
-    sprintf(tmp, "DIMENSION: %d", n_cidades);
-    for (int i = 0; i < 2; i++)
-        fgets(tmp, 100, fp);
-    DEBUG(printf("Número de elementos: %d\n", *n_cidades));
-
-    type_city *cidades = (type_city *)malloc(*n_cidades * sizeof(type_city));
-
-    for (int i = 0; i < *n_cidades; i++)
-    {
-        fscanf(fp, "%f %f", &cidades[i].x, &cidades[i].y);
-        cidades[i].id = i;
-    }
-
-    fclose(fp);
-
-    return cidades;
-}
-
-int main(int argc, char *argv[])
-{
-    int n_cidades, capacidad;
-
-    if (argc != 2)
-    {
-        printf("Uso: %s <nome do arquivo de entrada>", argv[0]);
-        return 1;
-    }
-
-    type_city *cidades = read_cidades(argv[1], &n_cidades, &capacidad);
-
-    print_cidades(cidades, n_cidades);
-    free(cidades);
-    return 0;
+    int pai1 = roleta_pais(populacao, n_populacoes), pai2;
+    do {
+        pai2 = roleta_pais(populacao, n_populacoes);
+    } while (pai1 == pai2);
+    parents[0] = pai1;
+    parents[1] = pai2;
 }

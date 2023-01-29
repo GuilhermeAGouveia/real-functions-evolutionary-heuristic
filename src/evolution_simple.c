@@ -1,55 +1,20 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
 #include "./funcoes_cec_2015/cec15_test_func.h"
-
-#define DEBUG(x) x
-
-typedef struct individue_
-{
-    double *chromosome;
-    double fitness;
-} individue;
-
-typedef struct domain {
-    double min;
-    double max;
-} domain;
+#include "./statistics.h"
+#include "./types.h"
+#include "./utils.h"
+#define STATISTICS(x) x
+#define DEBUG(x) 
 
 void fitness(individue *individuo, int dimension)
 {
-    //individuo.fitness = real_function(individuo.chromosome, dimension);
+    // individuo.fitness = real_function(individuo.chromosome, dimension);
     cec15_test_func(individuo->chromosome, &individuo->fitness, dimension, 1, 3);
-    //printf("fitness: %f\n", individuo->fitness);
-}
-
-int print_individue(individue individuo, int dimension)
-{
-    DEBUG(printf("\nprint_individue\n"););
-    printf("Individue: ");
-    for (int j = 0; j < dimension; j++)
-    {
-        printf("%lf ", individuo.chromosome[j]);
-    }
-    printf("Fitness: %lf\n", individuo.fitness);
-    return 0;
-}
-
-int print_population(individue *population, int n_populacoes, int dimension)
-{
-    DEBUG(printf("\nprint_population\n"););
-    for (int i = 0; i < n_populacoes; i++)
-    {
-        print_individue(population[i], dimension);
-    }
-    return 0;
-}
-
-double random_double(double min, double max)
-{
-    double random = min + (max - min) * (rand() / (double)RAND_MAX);
-    return random;
+    // printf("fitness: %f\n", individuo->fitness);
 }
 
 int comparador_individue(const void *a, const void *b)
@@ -92,7 +57,7 @@ void print_roleta(int *roleta, int roleta_size, int ball1, int ball2)
 
 int roleta_pais(individue *populacao, int n_populacoes)
 {
-      DEBUG(printf("\nselect_parents\n"););
+    DEBUG(printf("\nselect_parents\n"););
     int roulette[100000];
     double sum_beneficio = 0.0;
 
@@ -120,20 +85,20 @@ int roleta_pais(individue *populacao, int n_populacoes)
     return roulette[rand() % base];
 }
 
-
-
 void select_parents(individue *populacao, int n_populacoes, individue *parents[2])
 {
     int pai1 = roleta_pais(populacao, n_populacoes), pai2;
-    do {
+    do
+    {
         pai2 = roleta_pais(populacao, n_populacoes);
     } while (pai1 == pai2);
     parents[0] = &populacao[pai1];
     parents[1] = &populacao[pai2];
-    //printf("Pais: %d e %d\n", pai1, pai2);
+    // printf("Pais: %d e %d\n", pai1, pai2);
 }
 
-typedef enum {
+typedef enum
+{
     MEDIA,
     MEDIA_GEOMETRICA,
     METADE,
@@ -142,12 +107,11 @@ typedef enum {
     BLEND,
 } crossover_type;
 
-
-
-individue cruzamento_media(individue parent1, individue parent2, int n_itens) {
+individue cruzamento_media(individue parent1, individue parent2, int n_itens)
+{
     DEBUG(printf("\ncruzamento_media\n"););
 
-    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    double *child_chromosome = (double *)malloc(n_itens * sizeof(double));
     individue child = {child_chromosome, INFINITY};
 
     for (int i = 0; i < n_itens; i++)
@@ -158,23 +122,11 @@ individue cruzamento_media(individue parent1, individue parent2, int n_itens) {
     return child;
 }
 
-// individue cruzamento_media_g(individue parent1, individue parent2, int n_itens) {
-//     DEBUG(printf("\ncruzamento_media\n"););
-
-//     double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
-//     individue child = {child_chromosome, INFINITY};
-
-//     for (int i = 0; i < n_itens; i++)
-//     {
-//         child.chromosome[i] = (parent1.chromosome[i] * parent2.chromosome[i]) / 2;
-//     }
-//     fitness(&child, n_itens);
-//     return child;
-// }
-individue cruzamento_flat(individue parent1, individue parent2, int n_itens) {
+individue cruzamento_flat(individue parent1, individue parent2, int n_itens)
+{
     DEBUG(printf("\ncruzamento_flat\n"););
 
-    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    double *child_chromosome = (double *)malloc(n_itens * sizeof(double));
     individue child = {child_chromosome, INFINITY};
 
     for (int i = 0; i < n_itens; i++)
@@ -187,10 +139,11 @@ individue cruzamento_flat(individue parent1, individue parent2, int n_itens) {
     return child;
 }
 
-individue cruzamento_blend(individue parent1, individue parent2, int n_itens) {
+individue cruzamento_blend(individue parent1, individue parent2, int n_itens)
+{
     DEBUG(printf("\ncruzamento_blend\n"););
 
-    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    double *child_chromosome = (double *)malloc(n_itens * sizeof(double));
     individue child = {child_chromosome, INFINITY};
 
     for (int i = 0; i < n_itens; i++)
@@ -202,10 +155,11 @@ individue cruzamento_blend(individue parent1, individue parent2, int n_itens) {
     return child;
 }
 
-individue cruzamento_metade(individue parent1, individue parent2, int n_itens) {
+individue cruzamento_metade(individue parent1, individue parent2, int n_itens)
+{
     DEBUG(printf("\ncruzamento_metade\n"););
 
-    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    double *child_chromosome = (double *)malloc(n_itens * sizeof(double));
     individue child = {child_chromosome, INFINITY};
 
     int crossover_point = n_itens / 2;
@@ -221,10 +175,11 @@ individue cruzamento_metade(individue parent1, individue parent2, int n_itens) {
     return child;
 }
 
-individue cruzamento_ponto(individue parent1, individue parent2, int n_itens) {
+individue cruzamento_ponto(individue parent1, individue parent2, int n_itens)
+{
     DEBUG(printf("\ncruzamento_metade\n"););
 
-    double *child_chromosome = (double *) malloc(n_itens * sizeof(double));
+    double *child_chromosome = (double *)malloc(n_itens * sizeof(double));
     individue child = {child_chromosome, INFINITY};
 
     int crossover_point = rand() % n_itens;
@@ -284,7 +239,7 @@ individue *generate_population(int n_populacoes, int dimension, domain domain_fu
     individue *population = malloc(n_populacoes * sizeof(individue));
     for (int i = 0; i < n_populacoes; i++)
     {
-        population[i].chromosome = (double *) malloc(dimension * sizeof(double));
+        population[i].chromosome = (double *)malloc(dimension * sizeof(double));
         for (int j = 0; j < dimension; j++)
         {
             population[i].chromosome[j] = random_double(domain_function.min, domain_function.max);
@@ -292,11 +247,9 @@ individue *generate_population(int n_populacoes, int dimension, domain domain_fu
         population[i].fitness = INFINITY;
     }
 
-    //DEBUG(print_population(population, n_populacoes, dimension););
+    // DEBUG(print_population(population, n_populacoes, dimension););
     return population;
 }
-
-
 
 individue mutation(individue individuo, int dimension, domain domain_function)
 {
@@ -341,7 +294,8 @@ int selection(individue *population, int n_populacoes, int dimension)
  * @return int*
  */
 
-individue * get_pior_pai(individue *pais[2]) {
+individue *get_pior_pai(individue *pais[2])
+{
     return pais[0]->fitness < pais[1]->fitness ? pais[1] : pais[0];
 }
 
@@ -358,7 +312,7 @@ individue *evolution(int population_size, int dimension, domain domain_function,
     {
         // printf("\ni-ésima geração: %d\n", generations_count);
         selection(population, population_size, dimension);
-        //print_population(population, population_size, dimension);
+        // print_population(population, population_size, dimension);
         for (int i = 0; i < population_size - 1; i++)
         {
 
@@ -369,7 +323,7 @@ individue *evolution(int population_size, int dimension, domain domain_function,
             DEBUG(printf("Custo do filho: %lf\n", child.fitness););
             individue *pior_pai = get_pior_pai(parents);
             *pior_pai = child;
-            
+
             if (rand() % 100 < 10)
             {
                 population[i] = mutation(population[i], dimension, domain_function);
@@ -377,8 +331,10 @@ individue *evolution(int population_size, int dimension, domain domain_function,
         }
         time(&time_now);
         generations_count++;
-    printf("Geração: %d\n", generations_count);
-    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < 10 && generations_count < 5);
+        STATISTICS(print_coords(population, population_size, generations_count););
+
+        printf("Geração: %d\n", generations_count);
+    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < 10 && generations_count < 50);
 
     return get_best_of_population(population, population_size);
 }

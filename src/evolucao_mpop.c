@@ -10,7 +10,7 @@ int roleta_pais(individue *populacao, int nPopulacoes)
     int base = 0;
     for (int i = 0; i < nPopulacoes; i++)
     {
-        int beneficioIndividuo = populacao[i].fitness;
+        double beneficioIndividuo = populacao[i].fitness;
         int limit = ceil((double)(beneficioTodosIndividuos - beneficioIndividuo) / (double)beneficioTodosIndividuos * 100.00);
         for (int j = base; (j < base + limit); j++)
         {

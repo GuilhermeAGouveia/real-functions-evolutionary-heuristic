@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
-#include "./funcoes_cec_2015/cec15_test_func.h"
-#include "./statistics.h"
-#include "./types.h"
-#include "./utils.h"
+#include "./libs/funcoes_cec_2015/cec15_test_func.h"
+#include "./libs/statistics.h"
+#include "./libs/types.h"
+#include "./libs/utils.h"
 #define STATISTICS(x) x
 #define DEBUG(x) 
 
@@ -200,7 +200,7 @@ individue cruzamento(individue *parents[2], int n_itens)
     DEBUG(printf("\ncruzamento\n"););
     individue parent1 = *parents[0];
     individue parent2 = *parents[1];
-    int crossover = 3;
+    int crossover = MEDIA;
     switch (crossover)
     {
     case MEDIA:
@@ -299,7 +299,7 @@ individue *get_pior_pai(individue *pais[2])
     return pais[0]->fitness < pais[1]->fitness ? pais[1] : pais[0];
 }
 
-individue *evolution(int population_size, int dimension, domain domain_function, double select_criteria)
+individue *evolution(int population_size, int dimension, domain domain_function, double select_criteria, int generations_limit)
 {
     DEBUG(printf("\nevolution\n"););
     individue *parents[2];
@@ -323,7 +323,7 @@ individue *evolution(int population_size, int dimension, domain domain_function,
             DEBUG(printf("Custo do filho: %lf\n", child.fitness););
             individue *pior_pai = get_pior_pai(parents);
             *pior_pai = child;
-
+     
             if (rand() % 100 < 10)
             {
                 population[i] = mutation(population[i], dimension, domain_function);
@@ -331,10 +331,10 @@ individue *evolution(int population_size, int dimension, domain domain_function,
         }
         time(&time_now);
         generations_count++;
-        STATISTICS(print_coords(population, population_size, generations_count););
+        STATISTICS(print_coords(population, population_size, generations_count, generations_limit););
 
         printf("Geração: %d\n", generations_count);
-    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < 10 && generations_count < 50);
+    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < 10 && generations_count < generations_limit);
 
     return get_best_of_population(population, population_size);
 }
@@ -343,7 +343,7 @@ int main(int argc, char *argv[])
 {
 
     individue *result = NULL;
-    result = evolution(100, 10, (domain){-100, 100}, 10);
+    result = evolution(100, 10, (domain){-100, 100}, 10, 100);
 
     print_individue(*result, 10);
     return 0;

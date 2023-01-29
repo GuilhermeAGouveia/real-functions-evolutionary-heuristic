@@ -6,9 +6,12 @@
 #define STATISTICS_DIR "statistics"
 
 
-int print_coords(individue *population, int n_populacoes, int generation)
-{
-    DEBUG(printf("\nprint_population\n"););
+int print_coords(individue *population, int n_populacoes, int generation, int generation_max)
+{    
+    if (generation_max > 30 && generation % (generation_max / 30) != 0)
+    {
+        return 0;
+    }
     FILE *fp;
     char path[100] = STATISTICS_DIR;
     strcat(path, "/coords.dat");

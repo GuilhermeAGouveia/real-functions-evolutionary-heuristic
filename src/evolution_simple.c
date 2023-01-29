@@ -200,7 +200,7 @@ individue cruzamento(individue *parents[2], int n_itens)
     DEBUG(printf("\ncruzamento\n"););
     individue parent1 = *parents[0];
     individue parent2 = *parents[1];
-    int crossover = MEDIA;
+    int crossover = PONTO;
     switch (crossover)
     {
     case MEDIA:
@@ -320,6 +320,12 @@ individue *evolution(int population_size, int dimension, domain domain_function,
 
             select_parents(population, population_size, parents);
             individue child = cruzamento(parents, dimension);
+            // O if abaixo garante que nunca haverá dois individuos iguais na população
+            if (in_fitness_population(population, population_size, child))
+            {
+                child = mutation(child, dimension, domain_function);
+
+            }
             DEBUG(printf("Custo do filho: %lf\n", child.fitness););
             individue *pior_pai = get_pior_pai(parents);
             *pior_pai = child;
@@ -334,7 +340,7 @@ individue *evolution(int population_size, int dimension, domain domain_function,
         STATISTICS(print_coords(population, population_size, generations_count, generations_limit););
 
         printf("Geração: %d\n", generations_count);
-    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < 10 && generations_count < generations_limit);
+    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < 80 && generations_count < generations_limit);
 
     return get_best_of_population(population, population_size);
 }
@@ -343,7 +349,7 @@ int main(int argc, char *argv[])
 {
 
     individue *result = NULL;
-    result = evolution(100, 10, (domain){-100, 100}, 10, 100);
+    result = evolution(100, 10, (domain){-100, 100}, 10, 180);
 
     print_individue(*result, 10);
     return 0;

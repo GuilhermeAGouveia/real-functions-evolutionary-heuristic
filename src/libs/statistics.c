@@ -12,6 +12,7 @@ int print_coords(individue *population, int n_populacoes, int generation, int ge
     {
         return 0;
     }
+    
     FILE *fp;
     char path[100] = STATISTICS_DIR;
     strcat(path, "/coords.dat");

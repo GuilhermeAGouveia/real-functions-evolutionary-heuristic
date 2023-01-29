@@ -14,6 +14,9 @@ void fitness(individue *individuo, int dimension)
 {
     // individuo.fitness = real_function(individuo.chromosome, dimension);
     cec15_test_func(individuo->chromosome, &individuo->fitness, dimension, 1, 3);
+    // double x = individuo->chromosome[0];
+    // double y = individuo->chromosome[1];
+    // individuo->fitness = pow(x, 2) + pow(y, 2) - cos(18 * x) - cos(18 * y);
     // printf("fitness: %f\n", individuo->fitness);
 }
 
@@ -339,7 +342,7 @@ individue *evolution(int population_size, int dimension, domain domain_function,
         generations_count++;
         STATISTICS(print_coords(population, population_size, generations_count, generations_limit););
 
-        printf("Geração: %d\n", generations_count);
+        //printf("Geração: %d\n", generations_count);
     } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < 80 && generations_count < generations_limit);
 
     return get_best_of_population(population, population_size);
@@ -349,7 +352,7 @@ int main(int argc, char *argv[])
 {
 
     individue *result = NULL;
-    result = evolution(100, 10, (domain){-100, 100}, 10, 180);
+    result = evolution(50, 10, (domain){-100, 100}, 10, 75);
 
     print_individue(*result, 10);
     return 0;

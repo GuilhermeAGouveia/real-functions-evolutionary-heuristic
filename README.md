@@ -28,14 +28,14 @@ Para instalar o projeto, siga estas etapas:
 git clone https://github.com/GuilhermeAGouveia/real-functions-evolutionary-heuristic.git
 ```
 2. Inicie o container docker com todas as dependencias já instaladas
-   - 2.1. Utilizando apenas docker
+   - Utilizando apenas docker
   
-   ```make run```
-   - 2.2. Utilizando docker-compose com VScode
-     Instale a extensão docker no VSCode
-     Clique com o botão direito em cima do arquivo ```docker-compose.yml```
-     Selecione "Compose up"
-     Dentro da seção "Docker" no VSCode, encontre o container "inicient-container", clique com o botão direito e selecione "Attach shell"
+     - ```make run```
+   - Utilizando docker-compose com VScode
+     1. Instale a extensão docker no VSCode
+     2. Clique com o botão direito em cima do arquivo ```docker-compose.yml```
+     3. Selecione "Compose up"
+     4. Dentro da seção "Docker" no VSCode, encontre o container "inicient-container", clique com o botão direito e selecione "Attach shell"
    
      
 

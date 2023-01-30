@@ -1,7 +1,7 @@
 version: "3.8"
 services:
-  incient-service:
-    container_name: incient-container
+  inicient-service:
+    container_name: inicient-container
     image: guilhermegouveia/inicient-env
     volumes:
       - ./src:/home/project

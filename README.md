@@ -2,10 +2,18 @@
 
 <!---Esses são exemplos. Veja https://shields.io para outras pessoas ou para personalizar este conjunto de escudos . Você pode querer incluir dependências, status do projeto e informações de licença aqui--->
 
-![GitHub repo size](https://img.shields.io/github/repo-size/celso-patiri/hostel-app-gcva?style=for-the-badge)
-![GitHub language count](https://img.shields.io/github/languages/count/celso-patiri/hostel-app-gcva?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/celso-patiri/hostel-app-gcva?style=for-the-badge)
-![GitHub open issues](https://img.shields.io/github/issues/celso-patiri/hostel-app-gcva?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/GuilhermeAGouveia
+/
+real-functions-evolutionary-heuristic?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/GuilhermeAGouveia
+/
+real-functions-evolutionary-heuristic?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/GuilhermeAGouveia
+/
+real-functions-evolutionary-heuristic?style=for-the-badge)
+![GitHub open issues](https://img.shields.io/github/issues/GuilhermeAGouveia
+/
+real-functions-evolutionary-heuristic?style=for-the-badge)
 
 > Comparação do algoritmo genético evolucionário simples com o algoritmo genético island-model (multi-populacional)
 

@@ -7,7 +7,8 @@
 
 
 int print_coords(individue *population, int n_populacoes, int generation, int generation_max)
-{    
+{   
+    //printf("Inserindo dados de estatistica da população em %s\n", STATISTICS_DIR);
     if (generation_max > 30 && generation % (generation_max / 30) != 0)
     {
         return 0;

@@ -6,5 +6,5 @@ run: ;
 	@echo -e "\nBuild $(image_name) image\n"; \
 	docker build -t $(image_name) .; \
 	echo -e "\nRunning $(image_name) container\n"; \
-	docker run -it --rm --name $(image_name)-container $(image_name); \
+	docker run -it --rm --name $(image_name)-container $(image_name) /bin/bash; \
 

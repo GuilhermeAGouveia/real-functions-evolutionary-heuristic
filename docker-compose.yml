@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  incient-service:
+    container_name: incient-container
+    image: guilhermegouveia/inicient-env
+    volumes:
+      - ./src:/home/project
+    working_dir: /home/project
+    command: /bin/bash -c "while true; do sleep 30; done"
+    networks:
+        - main
+
+networks:
+  main:
+    driver: bridge

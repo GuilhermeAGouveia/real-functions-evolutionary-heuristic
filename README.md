@@ -19,7 +19,7 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 * docker v20.10.0+ :heavy_check_mark:
 * docker-compose v1.29.0+ :heavy_check_mark:
 
-## 🚀 Get started
+## 🚀 Getting started
 
 Para instalar o projeto, siga estas etapas:
 

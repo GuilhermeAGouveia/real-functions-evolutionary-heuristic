@@ -8,7 +8,7 @@
 #include "./libs/types.h"
 #include "./libs/utils.h"
 #define STATISTICS(x) x
-#define DEBUG(x) 
+#define DEBUG(x)
 
 void fitness(individue *individuo, int dimension)
 {

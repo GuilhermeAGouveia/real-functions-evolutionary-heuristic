@@ -10,8 +10,8 @@
 #define STATISTICS(x) x
 #define DEBUG(x)
 
-#define POPULATION_SIZE 50
-#define NUM_GENERATIONS 100
+#define POPULATION_SIZE 100
+#define NUM_GENERATIONS 20000
 #define NUM_PARENTS 10
 #define MUTATION_PROBABILITY 0.10
 #define DIMENSION 10
@@ -22,7 +22,7 @@
 void fitness(individue *individuo, int dimension)
 {
     // individuo.fitness = real_function(individuo.chromosome, dimension);
-    cec15_test_func(individuo->chromosome, &individuo->fitness, dimension, 1, 3);
+    cec15_test_func(individuo->chromosome, &individuo->fitness, dimension, 1, 1);
     // double x = individuo->chromosome[0];
     // double y = individuo->chromosome[1];
     // individuo->fitness = pow(x, 2) + pow(y, 2) - cos(18 * x) - cos(18 * y);

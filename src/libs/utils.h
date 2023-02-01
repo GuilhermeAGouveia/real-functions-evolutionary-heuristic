@@ -14,8 +14,7 @@
 #ifndef UTILS_H
 #include "types.h"
 #define UTILS_H
-
-#define DEBUG(x)
+#define DEBUG(x) 
 
 void print_individue(individue individuo, int dimension);
 void print_population(individue *population, int n_populacoes, int dimension);

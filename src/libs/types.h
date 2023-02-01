@@ -18,6 +18,8 @@ typedef struct individue_
 {
     double *chromosome;
     double fitness;
+    float inter_Pai_inicio;
+    float inter_Pai_fim;
 } individue;
 
 typedef struct domain

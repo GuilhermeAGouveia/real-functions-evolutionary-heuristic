@@ -11,7 +11,7 @@ void print_individue(individue individuo, int dimension)
     {
         printf("%lf ", individuo.chromosome[j]);
     }
-    printf("Fitness: %lf\n", individuo.fitness);
+    printf("\nFitness: %lf\n", individuo.fitness);
 }
 
 void print_population(individue *population, int n_populacoes, int dimension)

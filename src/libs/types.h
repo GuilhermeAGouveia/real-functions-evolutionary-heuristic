@@ -22,6 +22,15 @@ typedef struct individue_
     float inter_Pai_fim;
 } individue;
 
+
+typedef struct population_
+{
+    individue *individues;
+    int size;
+    struct population_ **neighbours;
+
+} population;
+
 typedef struct domain
 {
     double min;

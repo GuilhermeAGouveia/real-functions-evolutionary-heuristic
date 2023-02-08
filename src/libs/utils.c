@@ -14,12 +14,12 @@ void print_individue(individue individuo, int dimension)
     printf("\nFitness: %lf\n", individuo.fitness);
 }
 
-void print_population(individue *population, int n_populacoes, int dimension)
+void print_population(individue *pop, int n_populacoes, int dimension)
 {
     DEBUG(printf("\nprint_population\n"););
     for (int i = 0; i < n_populacoes; i++)
     {
-        print_individue(population[i], dimension);
+        print_individue(pop[i], dimension);
     }
 }
 

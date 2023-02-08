@@ -8,12 +8,12 @@
 #include "./libs/types.h"
 #include "./libs/utils.h"
 #include "./libs/crossover.h"
-#define STATISTICS(x) x
-#define DEBUG(x)
+#define STATISTICS(x)
+#define DEBUG(x) 
 
 #define ISLAND_SIZE 5
-#define POPULATION_SIZE 50
-#define NUM_GENERATIONS 50
+#define POPULATION_SIZE 100
+#define NUM_GENERATIONS 100
 #define MUTATION_PROBABILITY 80 // %
 #define DIMENSION 10            // 10 or 30
 #define BOUNDS_LOWER -100
@@ -111,12 +111,11 @@ void select_parents(individue *populacao, int n_populacoes, individue *parents[2
     // printf("Pais: %d e %d\n", pai1, pai2);
 }
 
-individue cruzamento(individue *parents[2], int n_itens)
+individue cruzamento(individue *parents[2], int n_itens, int crossover)
 {
     DEBUG(printf("\ncruzamento\n"););
     individue parent1 = *parents[0];
     individue parent2 = *parents[1];
-    int crossover = PONTO;
     individue filho;
     switch (crossover)
     {
@@ -182,13 +181,14 @@ individue mutation(individue individuo, int dimension, domain domain_function)
 
 individue *get_best_of_population(individue *population, int n_populacoes)
 {
-    qsort(population, n_populacoes, sizeof(individue), comparador_individue);
+    DEBUG(printf("\nget_best_of_population\n"););
+    //qsort(population, n_populacoes, sizeof(individue), comparador_individue);
     return &population[n_populacoes - 1];
 }
 
 individue *get_worst_of_population(individue *population, int n_populacoes)
 {
-    qsort(population, n_populacoes, sizeof(individue), comparador_individue);
+    //qsort(population, n_populacoes, sizeof(individue), comparador_individue);
     return &population[0];
 }
 
@@ -233,6 +233,7 @@ population *generate_island(int island_size, int population_size, int dimension,
     {
         populations[i].individues = generate_population(population_size, dimension, domain_function);
         populations[i].size = population_size;
+        populations[i].crossover = rand() % 6;
         populations[i].neighbours = calloc(4, sizeof(population *));
         populations[i].neighbours[0] = &populations[(i + 1) % island_size]; // talvez isso dê problema
     }
@@ -246,12 +247,16 @@ void migrate(population *populations, int island_size, int population_size, int 
 
     for (int i = 0; i < island_size; i++)
     {
-        population *current_island = &populations[i];
-        individue *population = current_island->individues;
+        DEBUG(printf("Populacao %d\n", i));
+        population current_island = populations[i];
+        individue *population = current_island.individues;
         individue *melhor_individuo_da_populacao = get_best_of_population(population, population_size);
+        DEBUG(printf("Melhor individuo da populacao %d: %lf\n", i, melhor_individuo_da_populacao->fitness););
         for (int j = 0; j < 4; j++)
         {
-            vizinho = current_island->neighbours[j];
+            vizinho = current_island.neighbours[j];
+            if (vizinho == NULL)
+                continue;
             individue *neighbour_population = vizinho->individues;
             individue *pior_indivuduo_do_vizinho = get_worst_of_population(neighbour_population, population_size);
             if (melhor_individuo_da_populacao->fitness > pior_indivuduo_do_vizinho->fitness)
@@ -276,24 +281,26 @@ individue evolution(int island_size, int population_size, int dimension, domain 
 
     time(&time_init);
     time(&time_now);
-
-    while (difftime(time_now, time_init) < 80)
+    printf("Iniciando evolucao\n");
+    while (difftime(time_now, time_init) < 300)
     {
         for (int i = 0; i < island_size; i++)
         {
+            DEBUG(printf("\n\ni-ésima ilha: %d\n", i););
             population *current_island = &populations[i];
             individue *population = current_island->individues;
-            selection(population, population_size, dimension);
             int generation_count = 0;
             while (generation_count < num_generations)
             {
+                selection(population, population_size, dimension);
+
                 for (int i = 0; i < current_island->size - 1; i++)
                 {
 
                     DEBUG(printf("\ni-ésimo individuo: %d\n", i););
 
                     select_parents(population, population_size, parents);
-                    individue child = cruzamento(parents, dimension);
+                    individue child = cruzamento(parents, dimension, current_island->crossover);
                     // O if abaixo garante que nunca haverá dois individuos iguais na população
                     if (in_fitness_population(population, population_size, child))
                     {
@@ -308,6 +315,7 @@ individue evolution(int island_size, int population_size, int dimension, domain 
                         population[i] = mutation(population[i], dimension, domain_function);
                     }
                 }
+                selection(population, population_size, dimension);
                 generation_count++;
                 STATISTICS(print_coords(population, population_size, generation_count, num_generations););
             }
@@ -315,8 +323,8 @@ individue evolution(int island_size, int population_size, int dimension, domain 
             if (bestCurrent->fitness < bestIndividuo.fitness)
                 bestIndividuo = *bestCurrent;
         }
+        printf("Era de migração\n");
         migrate(populations, island_size, population_size, dimension, domain_function);
-        puts("Migrou");
         time(&time_now);
     }
     // printf("Geração: %d\n", generations_count);

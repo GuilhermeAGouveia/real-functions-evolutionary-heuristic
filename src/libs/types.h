@@ -28,6 +28,7 @@ typedef struct population_
     individue *individues;
     int size;
     struct population_ **neighbours;
+    int crossover;
 
 } population;
 

@@ -305,10 +305,10 @@ individue evolution(int island_size, int population_size, int dimension, domain 
                     select_parents(population, population_size, parents);
                     individue child = cruzamento(parents, dimension, current_island->crossover);
                     // O if abaixo garante que nunca haverá dois individuos iguais na população
-                    if (in_fitness_population(population, population_size, child))
-                    {
-                        child = mutation(child, dimension, domain_function);
-                    }
+                    // if (in_fitness_population(population, population_size, child))
+                    // {
+                    //     child = mutation(child, dimension, domain_function);
+                    // }
                     DEBUG(printf("Custo do filho: %lf\n", child.fitness););
                     individue *pior_pai = get_pior_pai(parents);
                     *pior_pai = child;

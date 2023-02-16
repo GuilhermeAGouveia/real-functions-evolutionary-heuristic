@@ -11,15 +11,17 @@
 #define STATISTICS(x)
 #define DEBUG(x) 
 
-#define ISLAND_SIZE 5
-#define POPULATION_SIZE 100
-#define NUM_GENERATIONS 100
+#define ISLAND_SIZE 10
+#define POPULATION_SIZE 5
+#define NUM_GENERATIONS 150
 #define MUTATION_PROBABILITY 80 // %
 #define DIMENSION 10            // 10 or 30
 #define BOUNDS_LOWER -100
 #define BOUNDS_UPPER 100
 #define SELECT_CRITERIA 0.0001
 #define FUNCTION_NUMBER 3 // 1 to 15
+
+#define TIME_LIMIT 10 // seconds
 
 void fitness(individue *individuo, int dimension)
 {
@@ -236,6 +238,7 @@ population *generate_island(int island_size, int population_size, int dimension,
         populations[i].crossover = rand() % 6;
         populations[i].neighbours = calloc(4, sizeof(population *));
         populations[i].neighbours[0] = &populations[(i + 1) % island_size]; // talvez isso dê problema
+        populations[i].neighbours[1] = &populations[(i + 3) % island_size]; // talvez isso dê problema
     }
     return populations;
 }
@@ -282,7 +285,7 @@ individue evolution(int island_size, int population_size, int dimension, domain 
     time(&time_init);
     time(&time_now);
     printf("Iniciando evolucao\n");
-    while (difftime(time_now, time_init) < 300)
+    while (difftime(time_now, time_init) < TIME_LIMIT)
     {
         for (int i = 0; i < island_size; i++)
         {
@@ -335,6 +338,7 @@ int main(int argc, char *argv[])
 {
 
     individue result;
+    srand(1000);
     result = evolution(ISLAND_SIZE, POPULATION_SIZE, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, NUM_GENERATIONS);
 
     print_individue(result, DIMENSION);

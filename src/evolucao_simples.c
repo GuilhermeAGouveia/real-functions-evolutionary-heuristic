@@ -12,13 +12,15 @@
 #define DEBUG(x)
 
 #define POPULATION_SIZE 100
-#define NUM_GENERATIONS 3000
+#define NUM_GENERATIONS 1000
 #define MUTATION_PROBABILITY 80 // %
 #define DIMENSION 10 // 10 or 30
 #define BOUNDS_LOWER -100
 #define BOUNDS_UPPER 100
 #define SELECT_CRITERIA 0.0001
 #define FUNCTION_NUMBER 3 // 1 to 15
+
+#define TIME_LIMIT 10 // seconds
 
 void fitness(individue *individuo, int dimension)
 {
@@ -259,7 +261,7 @@ individue *evolution(int population_size, int dimension, domain domain_function,
         STATISTICS(print_coords(population, population_size, generations_count, num_generations););
 
         //printf("Geração: %d\n", generations_count);
-    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < 80 && generations_count < num_generations);
+    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < TIME_LIMIT && generations_count < num_generations);
 
     return get_best_of_population(population, population_size);
 }

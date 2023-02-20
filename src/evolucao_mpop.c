@@ -336,9 +336,11 @@ individue evolution(int island_size, int population_size, int dimension, domain 
 
 int main(int argc, char *argv[])
 {
-
+    time_t semente = time(NULL);
+    printf("Semente: %ld\n ", semente);
     individue result;
-    srand(1000);
+    //Melhor semente até agora: 1676926751
+    srand(semente);
     result = evolution(ISLAND_SIZE, POPULATION_SIZE, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, NUM_GENERATIONS);
 
     print_individue(result, DIMENSION);

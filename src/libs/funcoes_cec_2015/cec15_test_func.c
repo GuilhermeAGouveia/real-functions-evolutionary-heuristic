@@ -7,7 +7,8 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <malloc.h>
+//#include <malloc.h>
+#include <stdlib.h>
 #include "cec15_test_func.h"
 #define DEBUG(x) x
 
@@ -514,7 +515,7 @@ void griewank_func (double *x, double *f, int nx, double *Os,double *Mr,int s_fl
 
 void rastrigin_func (double *x, double *f, int nx, double *Os,double *Mr,int s_flag, int r_flag) /* Rastrigin's  */
 {
-	DEBUG("rastrigin_func");
+	//DEBUG("rastrigin_func");
     int i;
 	f[0] = 0.0;
 

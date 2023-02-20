@@ -1,10 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 resultado=0
 minimo=10000000000
 minimo_atual=0
 semente=0
-make 
-for i in {1..3}; do
+limit=10
+make
+source progress-bar.sh/progress-bar.sh
+for i in $(seq 1 $limit); do
     if [ $(expr $i % 3) -eq 0 ]; then
         echo "Procurando."
     fi
@@ -14,11 +16,8 @@ for i in {1..3}; do
     if [ $(expr $i % 3) -eq 2 ]; then
         echo "Procurando..."
     fi
-    stringProgresso=;
-    for j in {1..$i}; do
-        stringProgresso=$stringProgresso"="
-    done
-    echo $stringProgresso
+    
+    progress-bar $i
     resultado=$(./evol)
     semente_atual=$(echo $resultado | grep Semente | cut -d' ' -f2)
     minimo_atual=$(echo $resultado | grep Fitness | cut -d' ' -f15)

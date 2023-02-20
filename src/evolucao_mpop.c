@@ -21,7 +21,7 @@
 #define SELECT_CRITERIA 0.0001
 #define FUNCTION_NUMBER 3 // 1 to 15
 
-#define TIME_LIMIT 10 // seconds
+#define TIME_LIMIT 1 // seconds
 
 void fitness(individue *individuo, int dimension)
 {
@@ -284,7 +284,7 @@ individue evolution(int island_size, int population_size, int dimension, domain 
 
     time(&time_init);
     time(&time_now);
-    printf("Iniciando evolucao\n");
+    DEBUG(printf("Iniciando evolucao\n"););
     while (difftime(time_now, time_init) < TIME_LIMIT)
     {
         for (int i = 0; i < island_size; i++)
@@ -326,11 +326,10 @@ individue evolution(int island_size, int population_size, int dimension, domain 
             if (bestCurrent->fitness < bestIndividuo.fitness)
                 bestIndividuo = *bestCurrent;
         }
-        printf("Era de migração\n");
         migrate(populations, island_size, population_size, dimension, domain_function);
         time(&time_now);
     }
-    // printf("Geração: %d\n", generations_count);
+    DEBUG(printf("Geração: %d\n", generations_count););
     return bestIndividuo;
 }
 

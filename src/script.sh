@@ -4,7 +4,7 @@ minimo=10000000000
 minimo_atual=0
 semente=0
 make 
-for i in {1..25}; do
+for i in {1..3}; do
     if [ $(expr $i % 3) -eq 0 ]; then
         echo "Procurando."
     fi
@@ -14,6 +14,11 @@ for i in {1..25}; do
     if [ $(expr $i % 3) -eq 2 ]; then
         echo "Procurando..."
     fi
+    stringProgresso=;
+    for j in {1..$i}; do
+        stringProgresso=$stringProgresso"="
+    done
+    echo $stringProgresso
     resultado=$(./evol)
     semente_atual=$(echo $resultado | grep Semente | cut -d' ' -f2)
     minimo_atual=$(echo $resultado | grep Fitness | cut -d' ' -f15)

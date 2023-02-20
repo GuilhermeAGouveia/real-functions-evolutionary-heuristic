@@ -21,7 +21,7 @@
 #define SELECT_CRITERIA 0.0001
 #define FUNCTION_NUMBER 3 // 1 to 15
 
-#define TIME_LIMIT 1 // seconds
+#define TIME_LIMIT 10 // seconds
 
 void fitness(individue *individuo, int dimension)
 {
@@ -338,7 +338,7 @@ int main(int argc, char *argv[])
     time_t semente = time(NULL);
     printf("Semente: %ld\n ", semente);
     individue result;
-    //Melhor semente até agora: 1676926751
+    //Melhor semente até agora: 1676931005
     srand(semente);
     result = evolution(ISLAND_SIZE, POPULATION_SIZE, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, NUM_GENERATIONS);
 

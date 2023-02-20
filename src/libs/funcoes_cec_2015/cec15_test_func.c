@@ -277,7 +277,7 @@ void cec15_test_func(double *x, double *f, int nx, int mx,int func_num)
 			//f[i]+=100*func_num;
 			break;
 		case 8:	
-			rastrigin_func(&x[i*nx],&f[i],nx,OShift,M,1,1);
+			grie_rosen_func(&x[i*nx],&f[i],nx,OShift,M,1,1);
 			//f[i]+=100*func_num;
 			break;
 		case 9:	

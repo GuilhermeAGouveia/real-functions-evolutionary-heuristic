@@ -3,7 +3,7 @@ resultado=0
 minimo=10000000000
 minimo_atual=0
 semente=0
-limit=10
+limit=25
 make
 source progress-bar.sh/progress-bar.sh
 for i in $(seq 1 $limit); do

@@ -3,7 +3,8 @@ resultado=0
 minimo=10000000000
 minimo_atual=0
 semente=0
-for i in {1..10}; do
+make 
+for i in {1..25}; do
     if [ $(expr $i % 3) -eq 0 ]; then
         echo "Procurando."
     fi
@@ -23,6 +24,7 @@ for i in {1..10}; do
         semente=$semente_atual
     fi
     clear
-done
+done;
+
 echo "Semente: $semente"
 echo "Fitness: $minimo"

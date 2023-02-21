@@ -1,0 +1,19 @@
+function HMPGA(populations)
+	populations <- GenerateIslands()
+	while Time limit not reached do
+        for each population in populations do
+            while number generations do
+                evaluate(population)
+                for number childs do
+                    SelectParents()
+                    child <- CrossOver()
+                    worstParent <- &getWorstParent()
+                    worstParent <- child
+                    Mutation()
+                end for
+                Selection()
+            end while
+        end while
+        Migrate()
+    end while
+end function

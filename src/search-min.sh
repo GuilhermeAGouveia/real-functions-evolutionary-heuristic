@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Options
-limit=10
+limit=10 # Default value
 usage() { echo "Usage: $0 [-n <Numero de execuções>] [-e <Tempo de cada execução>]" 1>&2; exit 1; }
 
 while getopts ":n:e:" o; do
@@ -23,6 +23,12 @@ shift $((OPTIND-1))
 # Main code
 
 clean_line() { printf "\r"; }
+mount_progress_bar() {
+    local progress=$1
+    clean_line
+    set_color_progress $progress
+    progress-bar $progress
+}
 set_color_progress() {
     if (( $1 < 25 )); then
         tput setaf 1
@@ -51,10 +57,8 @@ for i in $(seq 1 $vertical_center); do
     printf "\n"
 done
 
+mount_progress_bar 0 $limit
 for i in $(seq 1 $limit); do
-    set_color_progress $((i*100/limit))
-    progress-bar $i $limit
-
     resultado=$(./evol)
     semente_atual=$(echo $resultado | grep Semente | cut -d' ' -f2)
     minimo_atual=$(echo $resultado | grep Fitness | cut -d' ' -f15)
@@ -62,9 +66,11 @@ for i in $(seq 1 $limit); do
         minimo=$minimo_atual
         semente=$semente_atual
     fi
-    printf "\r";
+
+    mount_progress_bar $((i*100/limit))
 
 done;
+clean_line
 tput reset
 tput setaf 2
 echo -e "\nResultado:\n"

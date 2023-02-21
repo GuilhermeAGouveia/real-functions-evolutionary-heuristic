@@ -43,7 +43,7 @@ set_color_progress() {
 
 make
 clear
-source libs/progress-bar.sh/progress-bar.sh
+source libs/progress-bar/progress-bar.sh
 echo -e "Buscando em ${limit} execuções...\n"
 tput civis
 

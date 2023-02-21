@@ -13,15 +13,15 @@
 
 #define ISLAND_SIZE 10
 #define POPULATION_SIZE 5
-#define NUM_GENERATIONS 150
+#define NUM_GENERATIONS 200
 #define MUTATION_PROBABILITY 80 // %
 #define DIMENSION 10            // 10 or 30
 #define BOUNDS_LOWER -100
 #define BOUNDS_UPPER 100
 #define SELECT_CRITERIA 0.0001
-#define FUNCTION_NUMBER 8 // 1 to 15
+#define FUNCTION_NUMBER 1 // 1 to 15
 
-#define TIME_LIMIT 2 // seconds
+#define TIME_LIMIT 10 // seconds
 
 void fitness(individue *individuo, int dimension)
 {

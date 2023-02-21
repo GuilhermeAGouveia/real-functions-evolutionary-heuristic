@@ -19,6 +19,32 @@ while getopts ":n:e:" o; do
 done
 shift $((OPTIND-1))
 
+# Math
+
+# Function to calculate the mean of an array
+# Usage: mean "${array[@]}"
+mean() {
+    local sum=0
+    local count=0
+    for i in "$@"; do
+        sum=$(echo "$sum + $i" | bc)
+        count=$(echo "$count + 1" | bc)
+    done
+    echo "$sum / $count" | bc -l
+}
+
+# Function to calculate the standard deviation of an array
+# Usage: std "${array[@]}"
+std() {
+    local mean=$(mean "$@")
+    local sum=0
+    local count=0
+    for i in "$@"; do
+        sum=$(echo "$sum + ($i - $mean)^2" | bc)
+        count=$(echo "$count + 1" | bc)
+    done
+    echo "sqrt($sum / $count)" | bc -l
+}
 
 # Main code
 
@@ -52,7 +78,8 @@ resultado=0
 minimo=10000000000
 valor_atual=0
 maximo=0
-mean=0
+
+array_values=()
 
 semente=0
 
@@ -66,7 +93,7 @@ for i in $(seq 1 $limit); do
     resultado=$(./evol)
     semente_atual=$(echo $resultado | grep Semente | cut -d' ' -f2)
     valor_atual=$(echo $resultado | grep Fitness | cut -d' ' -f15)
-
+    array_values+=($valor_atual)
     if (( $(echo "$minimo > $valor_atual" | bc -l) )); then
         minimo=$valor_atual
         semente=$semente_atual
@@ -75,8 +102,6 @@ for i in $(seq 1 $limit); do
     if (( $(echo "$maximo < $valor_atual" | bc -l) )); then
         maximo=$valor_atual
     fi
-
-    mean=$(echo "scale=2; $mean + ($valor_atual / $limit)" | bc -l)
 
     mount_progress_bar $((i*100/limit))
 
@@ -88,4 +113,5 @@ echo -e "\nResultado:\n"
 echo "Semente do menor: $semente"
 echo "Minimo: $minimo"
 echo "Maximo: $maximo"
-echo "Média: $mean"
+echo "Média: $(mean "${array_values[@]}")"
+echo "Desvio padrão: $(std "${array_values[@]}")"

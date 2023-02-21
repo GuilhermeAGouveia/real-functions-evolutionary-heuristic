@@ -21,7 +21,7 @@
 #define SELECT_CRITERIA 0.0001
 #define FUNCTION_NUMBER 8 // 1 to 15
 
-#define TIME_LIMIT 30 // seconds
+#define TIME_LIMIT 2 // seconds
 
 void fitness(individue *individuo, int dimension)
 {

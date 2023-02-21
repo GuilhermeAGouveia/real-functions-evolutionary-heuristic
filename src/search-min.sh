@@ -48,8 +48,12 @@ echo -e "Buscando em ${limit} execuções...\n"
 tput civis
 
 resultado=0
+
 minimo=10000000000
-minimo_atual=0
+valor_atual=0
+maximo=0
+mean=0
+
 semente=0
 
 vertical_center=$((($(tput lines) - 3 )/ 2))
@@ -61,11 +65,18 @@ mount_progress_bar 0 $limit
 for i in $(seq 1 $limit); do
     resultado=$(./evol)
     semente_atual=$(echo $resultado | grep Semente | cut -d' ' -f2)
-    minimo_atual=$(echo $resultado | grep Fitness | cut -d' ' -f15)
-    if (( $(echo "$minimo > $minimo_atual" | bc -l) )); then
-        minimo=$minimo_atual
+    valor_atual=$(echo $resultado | grep Fitness | cut -d' ' -f15)
+
+    if (( $(echo "$minimo > $valor_atual" | bc -l) )); then
+        minimo=$valor_atual
         semente=$semente_atual
     fi
+
+    if (( $(echo "$maximo < $valor_atual" | bc -l) )); then
+        maximo=$valor_atual
+    fi
+
+    mean=$(echo "scale=2; $mean + ($valor_atual / $limit)" | bc -l)
 
     mount_progress_bar $((i*100/limit))
 
@@ -74,5 +85,7 @@ clean_line
 tput reset
 tput setaf 2
 echo -e "\nResultado:\n"
-echo "Semente: $semente"
-echo "Fitness: $minimo"
+echo "Semente do menor: $semente"
+echo "Minimo: $minimo"
+echo "Maximo: $maximo"
+echo "Média: $mean"

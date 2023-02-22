@@ -12,8 +12,8 @@
 #define DEBUG(x)
 
 #define ISLAND_SIZE 10
-#define POPULATION_SIZE 5
-#define NUM_GENERATIONS 200
+#define POPULATION_SIZE 3
+#define NUM_GENERATIONS 300
 #define MUTATION_PROBABILITY 80 // %
 #define DIMENSION 10            // 10 or 30
 #define BOUNDS_LOWER -100

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Options
-limit=10 # Default value
+n_execucoes=10 # Default value
 function_number=3 # Default value
 time_limit=10 # Default value
 usage() { echo "Usage: $0 [-n <Numero de execuções>] [-f <Numero da função de teste de 1 a 15>] [-t <Tempo máximo de cada execução>]" 1>&2; exit 1; }
@@ -9,7 +9,7 @@ usage() { echo "Usage: $0 [-n <Numero de execuções>] [-f <Numero da função d
 while getopts ":n:f:t:" o; do
     case "${o}" in
         n)
-            limit=${OPTARG}
+            n_execucoes=${OPTARG}
             ;;
         f)
             function_number=${OPTARG}
@@ -75,7 +75,7 @@ set_color_progress() {
 make
 clear
 source libs/progress-bar/progress-bar.sh
-echo -e "Buscando em ${limit} execuções para função ${function_number}...\n"
+echo -e "Buscando em ${n_execucoes} execuções para função ${function_number}...\n"
 tput civis
 
 resultado=0
@@ -93,8 +93,8 @@ for i in $(seq 1 $vertical_center); do
     printf "\n"
 done
 
-mount_progress_bar 0 $limit
-for i in $(seq 1 $limit); do
+mount_progress_bar 0 $n_execucoes
+for i in $(seq 1 $n_execucoes); do
     resultado=$(./evol 10 5 200 $function_number $time_limit)
     semente_atual=$(echo $resultado | grep Semente | cut -d' ' -f2)
     valor_atual=$(echo $resultado | grep Fitness | cut -d' ' -f15)
@@ -108,7 +108,7 @@ for i in $(seq 1 $limit); do
         maximo=$valor_atual
     fi
 
-    mount_progress_bar $((i*100/limit))
+    mount_progress_bar $((i*100/n_execucoes))
 
 done;
 clean_line

@@ -2,6 +2,8 @@
 
 # Options
 limit=10 # Default value
+function_number=3 # Default value
+time_limit=10 # Default value
 usage() { echo "Usage: $0 [-n <Numero de execuções>] [-f <Numero da função de teste de 1 a 15>] [-t <Tempo máximo de cada execução>]" 1>&2; exit 1; }
 
 while getopts ":n:f:t:" o; do

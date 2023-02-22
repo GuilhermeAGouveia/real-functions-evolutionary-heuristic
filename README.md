@@ -90,15 +90,6 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
           </a>
      </td>
          <td align="center">
-          <a href="https://github.com/gustavo1902">
-            <img width=100 src="https://avatars.githubusercontent.com/u/101591580?v=4" width="100px;" alt="Foto do Steve Jobs"/><br>
-            <sub>
-              <b>Gustavo Morais Costa</b>
-            </sub>
-          </a>
-     </td>
-      </td>
-         <td align="center">
           <a href="https://github.com/ViniciusBastoss">
             <img width=100 src="https://avatars.githubusercontent.com/u/117671262?v=4" width="100px;" alt="Foto do Steve Jobs"/><br>
             <sub>
@@ -114,7 +105,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
 
 Esse projeto está sob licença. Veja o arquivo [LICENSE]() para mais detalhes.
 
-[⬆ Voltar ao topo](#hostel-app-gcva)<br>
+[⬆ Voltar ao topo](#Algoritmos-Genéticos-para-otimização-de-funções-reais)<br>
 
 
 <!---Fim README.md teste--->

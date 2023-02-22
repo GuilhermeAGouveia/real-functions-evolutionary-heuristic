@@ -9,7 +9,7 @@
 #include "./libs/utils.h"
 #include "./libs/crossover.h"
 #define STATISTICS(x)
-#define DEBUG(x) 
+#define DEBUG(x)
 
 #define ISLAND_SIZE 10
 #define POPULATION_SIZE 5
@@ -23,10 +23,13 @@
 
 #define TIME_LIMIT 10 // seconds
 
+static int function_number = FUNCTION_NUMBER;
+static int time_limit = TIME_LIMIT;
+
 void fitness(individue *individuo, int dimension)
 {
     // individuo.fitness = real_function(individuo.chromosome, dimension);
-    cec15_test_func(individuo->chromosome, &individuo->fitness, dimension, 1, FUNCTION_NUMBER);
+    cec15_test_func(individuo->chromosome, &individuo->fitness, dimension, 1, function_number);
     // double x = individuo->chromosome[0];
     // double y = individuo->chromosome[1];
     // individuo->fitness = pow(x, 2) + pow(y, 2) - cos(18 * x) - cos(18 * y);
@@ -184,13 +187,13 @@ individue mutation(individue individuo, int dimension, domain domain_function)
 individue *get_best_of_population(individue *population, int n_populacoes)
 {
     DEBUG(printf("\nget_best_of_population\n"););
-    //qsort(population, n_populacoes, sizeof(individue), comparador_individue);
+    // qsort(population, n_populacoes, sizeof(individue), comparador_individue);
     return &population[n_populacoes - 1];
 }
 
 individue *get_worst_of_population(individue *population, int n_populacoes)
 {
-    //qsort(population, n_populacoes, sizeof(individue), comparador_individue);
+    // qsort(population, n_populacoes, sizeof(individue), comparador_individue);
     return &population[0];
 }
 
@@ -285,7 +288,7 @@ individue evolution(int island_size, int population_size, int dimension, domain 
     time(&time_init);
     time(&time_now);
     DEBUG(printf("Iniciando evolucao\n"););
-    while (difftime(time_now, time_init) < TIME_LIMIT)
+    while (difftime(time_now, time_init) < time_limit)
     {
         for (int i = 0; i < island_size; i++)
         {
@@ -338,11 +341,21 @@ int main(int argc, char *argv[])
     time_t semente = time(NULL);
     printf("Semente: %ld\n ", semente);
     individue result;
-    //Melhor semente até agora: 1676931005 (Funcao 3) - 301.356
-    //Melhor semente até agora: 1676935665 (Funcao 8) - 801.1393
+    // Melhor semente até agora: 1676931005 (Funcao 3) - 301.356
+    // Melhor semente até agora: 1676935665 (Funcao 8) - 801.1393
     srand(semente);
-    result = evolution(ISLAND_SIZE, POPULATION_SIZE, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, NUM_GENERATIONS);
-
+    if (argc < 2)
+        result = evolution(ISLAND_SIZE, POPULATION_SIZE, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, NUM_GENERATIONS);
+    else
+    {
+        int island_size, population_size, num_generations;
+        island_size = atoi(argv[1]);
+        population_size = atoi(argv[2]);
+        num_generations = atoi(argv[3]);
+        function_number = atoi(argv[4]);
+        time_limit = atoi(argv[5]);
+        result = evolution(island_size, population_size, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, num_generations);
+    }
     print_individue(result, DIMENSION);
     return 0;
 }

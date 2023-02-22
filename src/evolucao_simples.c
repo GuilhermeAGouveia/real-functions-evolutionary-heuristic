@@ -271,7 +271,6 @@ individue *evolution(int population_size, int dimension, domain domain_function,
 
 int main(int argc, char *argv[])
 {
-
     individue *result = NULL;
     time_t semente = time(NULL);
     printf("Semente: %ld\n ", semente);

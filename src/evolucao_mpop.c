@@ -12,8 +12,8 @@
 #define DEBUG(x)
 
 #define ISLAND_SIZE 10
-#define POPULATION_SIZE 5
-#define NUM_GENERATIONS 200
+#define POPULATION_SIZE 3
+#define NUM_GENERATIONS 300
 #define MUTATION_PROBABILITY 80 // %
 #define DIMENSION 10            // 10 or 30
 #define BOUNDS_LOWER -100
@@ -335,6 +335,81 @@ individue evolution(int island_size, int population_size, int dimension, domain 
     DEBUG(printf("Geração: %d\n", generations_count););
     return bestIndividuo;
 }
+/*Obs:Mudar FUNCTION_NUMBER para variavel
+void otimiza_parametros_grid(int *island_size, int *population_size, int *dimension, double *bounds_lower, double *bounds_upper, double *select_criteria, int *num_generations)
+{
+    int num_valores = 2, sem_melhora = 0, reduz_grid = 3, limite_tentativas = 7, aux = 0;
+    int island_size_aux[] = {20, 15, 10};
+    int population_size_aux[] = {30, 20, 5};
+    int num_generations_aux[] = {300, 200, 150};
+    individue individuo, individuo2, melhor_individuo1, melhor_individuo2;
+    melhor_individuo1.fitness = 100000;
+    melhor_individuo2.fitness = 100000;
+
+    *dimension = 10;
+    *bounds_lower = -100;
+    *bounds_upper = 100;
+    *select_criteria = 0.0001;
+    while (reduz_grid)
+    {
+        for (int i = num_valores; i >= 0; i--)
+            for (int j = num_valores; j >= 0; j--)
+                for (int k = num_valores; k >= 0; k--)
+                {
+                    FUNCTION_NUMBER = 14;
+                    individuo = evolution(island_size_aux[i], population_size_aux[j], *dimension, (domain){*bounds_lower, *bounds_upper}, *select_criteria, num_generations_aux[k]);
+                    FUNCTION_NUMBER = 15;
+                    individuo2 = evolution(island_size_aux[i], population_size_aux[j], *dimension, (domain){*bounds_lower, *bounds_upper}, *select_criteria, num_generations_aux[k]);
+                    printf("\nFitness_1:%lf\n", individuo.fitness);
+                    printf("\nFitness_2:%lf\n", individuo2.fitness);
+                    sem_melhora += 1;
+                    if (individuo.fitness < melhor_individuo1.fitness && individuo2.fitness < melhor_individuo2.fitness)
+                    {
+                        *island_size = island_size_aux[i];
+                        *population_size = population_size_aux[j];
+                        *num_generations = num_generations_aux[k];
+                        melhor_individuo1 = individuo;
+                        melhor_individuo2 = individuo2;
+                        sem_melhora = 0;
+                        aux = 0;
+                        printf("\nparametros:\n Island_size: %d, population_size: %d, num_generations: %d\n", *island_size, *population_size, *num_generations);
+                    }
+                    if (sem_melhora == limite_tentativas)
+                    {
+                        printf("\nSem melhora em %d tentativas\n", limite_tentativas);
+                        i = j = k = -1;
+                        aux += 1;
+                    }
+                }
+        if (aux == 2)
+            limite_tentativas = limite_tentativas * 2;
+        if (aux == 3)
+            reduz_grid = 0;
+        int reduzir;
+        // pegando os melhores parametros para gerar um novo conjunto
+        island_size_aux[0] = *island_size;
+        population_size_aux[0] = *population_size;
+        num_generations_aux[0] = *num_generations;
+        // gerando novo conjunto
+        for (int v = 1; v <= num_valores; v++)
+        {
+            reduzir = island_size_aux[v - 1] - 2 <= 0 ? 0 : 1;
+            island_size_aux[v] = island_size_aux[v - 1] - reduzir;
+
+            reduzir = population_size_aux[v - 1] - 3 <= 0 ? 0 : 2;
+            population_size_aux[v] = population_size_aux[v - 1] - reduzir;
+
+            reduzir = num_generations_aux[v - 1] - 20 <= 0 ? 0 : 20;
+            num_generations_aux[v] = num_generations_aux[v - 1] - reduzir;
+        }
+        reduz_grid--;
+    }
+
+    printf("\nFitness_1: %lf\n", melhor_individuo1.fitness);
+    printf("\nFitness_2: %lf\n", melhor_individuo2.fitness);
+    printf("\nparametros:\n Island_size: %d, population_size: %d, num_generations: %d\n", *island_size, *population_size, *num_generations);
+}
+*/
 
 int main(int argc, char *argv[])
 {

@@ -1,0 +1,13 @@
+while number generations do
+    evaluate(population)
+    for number childs do
+        SelectParents()
+        child <- CrossOver()
+        worstParent <- &getWorstParent()
+        worstParent <- child
+        if child in population then
+            ForcedMutation(child)
+        Mutation()
+    end for
+    Selection()
+end while

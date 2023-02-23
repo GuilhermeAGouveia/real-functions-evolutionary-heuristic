@@ -14,18 +14,21 @@
 #define POPULATION_SIZE 100
 #define NUM_GENERATIONS 1000
 #define MUTATION_PROBABILITY 80 // %
-#define DIMENSION 10 // 10 or 30
+#define DIMENSION 10            // 10 or 30
 #define BOUNDS_LOWER -100
 #define BOUNDS_UPPER 100
 #define SELECT_CRITERIA 0.0001
 #define FUNCTION_NUMBER 1 // 1 to 15
 
-#define TIME_LIMIT 10// seconds
+#define TIME_LIMIT 10 // seconds
+
+static int function_number = FUNCTION_NUMBER;
+static int time_limit = TIME_LIMIT;
 
 void fitness(individue *individuo, int dimension)
 {
     // individuo.fitness = real_function(individuo.chromosome, dimension);
-    cec15_test_func(individuo->chromosome, &individuo->fitness, dimension, 1, FUNCTION_NUMBER);
+    cec15_test_func(individuo->chromosome, &individuo->fitness, dimension, 1, function_number);
     // double x = individuo->chromosome[0];
     // double y = individuo->chromosome[1];
     // individuo->fitness = pow(x, 2) + pow(y, 2) - cos(18 * x) - cos(18 * y);
@@ -177,7 +180,7 @@ individue mutation(individue individuo, int dimension, domain domain_function)
     DEBUG(printf("\nmutation\n"););
     int mutation_point = rand() % dimension;
     individuo.chromosome[mutation_point] = random_double(domain_function.min, domain_function.max);
-    //individuo.chromosome[mutation_point] = !individuo.chromosome[mutation_point];
+    // individuo.chromosome[mutation_point] = !individuo.chromosome[mutation_point];
     fitness(&individuo, dimension);
 
     return individuo;
@@ -250,7 +253,7 @@ individue *evolution(int population_size, int dimension, domain domain_function,
             DEBUG(printf("Custo do filho: %lf\n", child.fitness););
             individue *pior_pai = get_pior_pai(parents);
             *pior_pai = child;
-     
+
             if (rand() % 100 < MUTATION_PROBABILITY)
             {
                 population[i] = mutation(population[i], dimension, domain_function);
@@ -260,18 +263,26 @@ individue *evolution(int population_size, int dimension, domain domain_function,
         generations_count++;
         STATISTICS(print_coords(population, population_size, generations_count, num_generations););
 
-        //printf("Geração: %d\n", generations_count);
-    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < TIME_LIMIT && generations_count < num_generations);
+        // printf("Geração: %d\n", generations_count);
+    } while (!avaliar(population, population_size, select_criteria) && difftime(time_now, time_init) < time_limit && generations_count < num_generations);
 
     return get_best_of_population(population, population_size);
 }
 
 int main(int argc, char *argv[])
 {
-
     individue *result = NULL;
-    result = evolution(POPULATION_SIZE, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, NUM_GENERATIONS);
-
+    time_t semente = time(NULL);
+    printf("Semente: %ld\n ", semente);
+    srand(semente);
+    if (argc < 2)
+        result = evolution(POPULATION_SIZE, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, NUM_GENERATIONS);
+    else
+    {
+        function_number = atoi(argv[1]);
+        time_limit = atoi(argv[2]);
+        result = evolution(POPULATION_SIZE, DIMENSION, (domain){BOUNDS_LOWER, BOUNDS_UPPER}, SELECT_CRITERIA, NUM_GENERATIONS);
+    }
     print_individue(*result, 10);
     return 0;
 }

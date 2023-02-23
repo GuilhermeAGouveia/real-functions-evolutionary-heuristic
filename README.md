@@ -52,10 +52,10 @@ git clone https://github.com/GuilhermeAGouveia/real-functions-evolutionary-heuri
 > 
 > `sudo make init`
 
-## 📫 Contribuindo hostel-app-gcva
+## 📫 Contribuindo com nosso projeto :D
 
 <!---Se o seu README for longo ou se você tiver algum processo ou etapas específicas que deseja que os contribuidores sigam, considere a criação de um arquivo CONTRIBUTING.md separado--->
-Para contribuir com hostel-app-gcva, siga estas etapas:
+Para contribuir com esse projeto, siga estas etapas:
 
 1. Bifurque este repositório.
 2. Crie um branch: `git checkout -b <nome_branch>`.
@@ -74,7 +74,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
 <table>
   <tr>
     <td align="center">
-      <a href="#">
+      <a href="https://github.com/caioreius">
         <img width=100 src="https://avatars.githubusercontent.com/u/87735654?v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
         <sub>
           <b>Caio Eduardo</b>
